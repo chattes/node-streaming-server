@@ -196,6 +196,6 @@ const makeBatchedRequest = async () => {
   console.log("All Sent .. Close Request");
   req.end();
 };
-for (let i = 0; i < 500; i++) {
+for (let i = 0; i < 400; i++) {
   makeBatchedRequest();
 }
