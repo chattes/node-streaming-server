@@ -24,10 +24,10 @@ const handleConnection = (socket) => {
   console.log("Connection Established with client");
   socket.on("data", async (chunk) => {
     // console.log(chunk.toString());
-    // socket.pause();
+    socket.pause();
     const delay = Math.floor(Math.random() * (3000 + 1));
     await someComplexTask(delay);
-    // socket.resume();
+    socket.resume();
     if (chunk.indexOf("0\r\n\r\n") > 0) {
       let customMessage = {
         requestCompleted: "We are done Here!",
