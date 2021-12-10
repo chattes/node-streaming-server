@@ -20,7 +20,43 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}/index.js"
-        }
+            "program": "${workspaceFolder}/server-socket-pause.js"
+        },
+        {
+            "name": "Test HTTP Server",
+            "program": "${workspaceFolder}/http/server.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Test HTTP Server Big Data",
+            "program": "${workspaceFolder}/big-data-stream/server.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Stream Pipes client",
+            "program": "${workspaceFolder}/stream-pipes/client.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Stream Pipes server",
+            "program": "${workspaceFolder}/stream-pipes/server.js",
+            "request": "launch",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
     ]
 }

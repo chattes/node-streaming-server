@@ -155,10 +155,10 @@ const sleep = (delay) => {
 };
 
 const makeBatchedRequest = async () => {
+  let drained = true;
   let options = {
     method: "POST",
-    // hostname: "localhost",
-    hostname: "18.221.5.250",
+    hostname: "localhost",
     port: 3001,
     path: "/",
     headers: {
@@ -176,7 +176,6 @@ const makeBatchedRequest = async () => {
     res.on("end", function (chunk) {
       console.log("Request Completed");
       let body = Buffer.concat(chunks);
-
       let json = JSON.parse(body);
       console.log(json);
     });
@@ -185,17 +184,40 @@ const makeBatchedRequest = async () => {
       console.error(error);
     });
   });
+  req.on("drain", () => {
+    console.log("buffer drained.. write more");
+    drained = true;
+  });
+  const goAheadandWrite = () => {
+    return new Promise((res) => {
+      setInterval(() => {
+        if (drained) {
+          res();
+        }
+      }, 500);
+    });
+  };
+  const _write = async (obj) => {
+    let dataToWrite = JSON.stringify(obj);
+    let dataBytes = Buffer.byteLength(dataToWrite);
+    let buffer = Buffer.alloc(4 + dataBytes);
+    buffer.writeUInt32BE(dataBytes);
+    buffer.write(dataToWrite, 4);
+    drained = req.write(buffer);
+    if (!drained) {
+      console.log("Pausing Writes", drained);
+      await goAheadandWrite();
+      console.log("Resume Writes");
+    }
+  };
 
-  for (let i = 0; i < 500; i++) {
+  for (let i = 0; i < 1; i++) {
     let batch = data[0];
-    batch._id = uuid.v4();
-    const postData = JSON.stringify(batch);
-    console.log("Sending Data...");
-    req.write(postData);
+    batch._id = i;
+    await _write(batch);
   }
   console.log("All Sent .. Close Request");
   req.end();
 };
-for (let i = 0; i < 400; i++) {
-  makeBatchedRequest();
-}
+
+makeBatchedRequest();
