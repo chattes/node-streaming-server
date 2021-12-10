@@ -1,11 +1,14 @@
 # node-streaming-server
 
-A simple node streaming server
+Some experiments using Node Streams.
 
-# Start Server
+```
 
-`node server.js`
+cd <folder>
 
-# Runnign the Client
+npm i
 
-`node client.js`
+node server.js
+
+node client.js
+```
